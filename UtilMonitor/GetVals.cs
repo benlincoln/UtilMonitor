@@ -9,13 +9,13 @@ public class Getter
     protected PerformanceCounter ramCounter;
     //This uses open source software Open Hardware Monitor
     protected Computer myComputer;
+    private string cpuUtil, gpuTemp, ramUtil;
 
-    private string cpuUtil;
-    private string gpuTemp;
-
+    //Default constructor
     public Getter()
     {
         cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+        ramCounter = new PerformanceCounter("Memory", "Available MBytes");
         cpuUtil = null;
         gpuTemp = null;
 
@@ -24,6 +24,7 @@ public class Getter
     {
         //Updates each value for the getters
         cpuUtil = cpuCounter.NextValue() + "%";
+        ramUtil = ramCounter.NextValue() + "MB";
         // Needs a new contructor each time to get the values
         myComputer = new Computer();
         myComputer.GPUEnabled = true;
@@ -36,19 +37,16 @@ public class Getter
                 {
                     if (sensor.SensorType == SensorType.Temperature)
                     {
-                        gpuTemp = sensor.Value.ToString();
+                        gpuTemp = $"{sensor.Value.ToString()}ºC";
                     }
                 }
             }
         }
-        // Essentially destories the object.
+        // Essentially destroies the myComputer object.
         myComputer = null;
     }
 
-
-
-
-   //ramCounter = new PerformanceCounter("Memory", "Available MBytes");
+    //Getters
    public string getCPUUtil()
         {
             return cpuUtil;
@@ -58,7 +56,10 @@ public class Getter
     {
         return gpuTemp;
     }
-
+    public string getRAM()
+    {
+        return ramUtil;
+    }
     }
 
 

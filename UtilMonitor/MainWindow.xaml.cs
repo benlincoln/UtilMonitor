@@ -44,7 +44,7 @@ namespace UtilMonitor
                 g.update();
                 CPUUtil.Text = g.getCPUUtil();
                 CPUTemp.Text = g.getGPUTemp();
-                
+                RAM.Text = g.getRAM();
 
             });
 
