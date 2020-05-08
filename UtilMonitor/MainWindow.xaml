@@ -1,0 +1,16 @@
+﻿<Window x:Name="UtilMonitor" x:Class="UtilMonitor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UtilMonitor"
+        mc:Ignorable="d"
+        Title="Simple HW Monitor" Height="237" Width="564">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" FontFamily="Lucida Sans"><Run Text="CPU Util"/><Run Text=":"/></TextBlock>
+        <TextBlock Name ="CPUUtil" HorizontalAlignment="Left" Margin="75,10,0,0" TextWrapping="Wrap" Text="null" VerticalAlignment="Top" RenderTransformOrigin="-0.612,0.625" FontFamily="Lucida Sans"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="65" FontFamily="Lucida Sans"><Run Text="G"/><Run Text="PU Temp:"/></TextBlock>
+        <TextBlock Name ="CPUTemp" HorizontalAlignment="Left" Margin="80,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" FontFamily="Lucida Sans"><Run Text="null"/><LineBreak/><Run/></TextBlock>
+
+    </Grid>
+</Window>
