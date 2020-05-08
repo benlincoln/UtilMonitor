@@ -41,7 +41,7 @@ public class Getter
                 }
             }
         }
-        // Essentially destories the object
+        // Essentially destories the object.
         myComputer = null;
     }
 
