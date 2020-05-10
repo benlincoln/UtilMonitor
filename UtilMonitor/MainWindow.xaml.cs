@@ -42,7 +42,7 @@ namespace UtilMonitor
                 //The canvas uses the top left as (0,0)
                 currentY = Convert.ToInt32(yMax) - g.getCPUUtil();
                 points.Add(new Point(x, currentY));
-                //Increments the x value along the graph
+                //Increments the x value along the graph, smaller the x value, the tighter the points on the graph and thus the more points shown before the graph resets
                 x += 5;
                 Polyline polyline = new Polyline();
                 polyline.StrokeThickness = 1;

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UtilMonitor"
         mc:Ignorable="d"
-        Title="Simple HW Monitor" Height="224.667" Width="299" FontFamily="Lucida Sans" ScrollViewer.CanContentScroll="True">
+        Title="Simple HW Monitor" Height="243.667" Width="299" FontFamily="Lucida Sans" ScrollViewer.CanContentScroll="True">
     <Grid Background="#FF322E2E" Margin="0,0,0,-4">
         <Grid.RowDefinitions>
             <RowDefinition Height="5*"/>
@@ -21,10 +21,12 @@
         <TextBlock Name ="CPUTemp" HorizontalAlignment="Left" Margin="70,29,0,0" TextWrapping="Wrap" Text="null" VerticalAlignment="Top" RenderTransformOrigin="-0.612,0.625" FontFamily="Roboto Thin" Foreground="#FFFDFDFD" Background="#FF7C7B7B" Width="65"/>
         <Canvas Name ="Graph" HorizontalAlignment="Left" Height="100
                 " Margin="10,57,0,0" VerticalAlignment="Top" Width="270" Background="#FF7C7B7B" Grid.RowSpan="2"/>
-        <Button Content="CPU Util" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="60"/>
-        <Button Content="CPU Temp" HorizontalAlignment="Left" Margin="75,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="64"/>
-        <Button Content="GPU Temp" HorizontalAlignment="Left" Margin="144,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="70"/>
-        <Button Content="RAM" HorizontalAlignment="Left" Margin="219,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="61"/>
+        <Button Content="CPU Util" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="60"/>
+        <Button Content="CPU Temp" HorizontalAlignment="Left" Margin="75,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="64"/>
+        <Button Content="GPU Temp" HorizontalAlignment="Left" Margin="144,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="70"/>
+        <Button Content="RAM" HorizontalAlignment="Left" Margin="219,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="61"/>
+        <Label Content="Currently Displaying:" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" Foreground="White"/>
+        <TextBlock Name="CurrentGraph" HorizontalAlignment="Left" Margin="142,162,0,0" TextWrapping="Wrap" Text="CPU Utilisation" VerticalAlignment="Top" Foreground="White"/>
 
 
 
