@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -13,11 +14,25 @@ namespace UtilMonitor
         private System.Windows.Threading.DispatcherTimer remainTimer = new System.Windows.Threading.DispatcherTimer();
         Getter g = new Getter();
         int x = 0;
+        string graphView = "cpuUtil";
         PointCollection points = new PointCollection();
         public MainWindow()
         {
             InitializeComponent();
             remainTimer.Tick += timedEvent;
+            //Creation of buttons and their events
+            Button cpuUtilBtn = new Button();
+            cpuUtilBtn.Name = "CPUUtil";
+            cpuUtilBtn.Click += cpuUtilClick;
+            Button cpuTempBtn = new Button();
+            cpuTempBtn.Name = "CPUTemp";
+            cpuTempBtn.Click += cpuTempClick;
+            Button gpuTempBtn = new Button();
+            gpuTempBtn.Name = "GPUTemp";
+            gpuTempBtn.Click += gpuTempClick;
+            Button ramBtn = new Button();
+            ramBtn.Name = "RAM";
+            ramBtn.Click += ramClick;
             //How frequently the timedEvent function is ran, in seconds
             remainTimer.Interval = TimeSpan.FromSeconds(0.25);
             remainTimer.Start();
@@ -32,29 +47,63 @@ namespace UtilMonitor
                 g.update();
                 //Updates the text values, could likely move these into a seperate function for code cleanliness
                 CPUUtil.Text = $"{g.getCPUUtil()}%";
-                GPUTemp.Text = g.getGPUTemp();
-                RAM.Text = g.getRAM();
-                CPUTemp.Text = g.getCPUTemp();
+                GPUTemp.Text = $"{g.getGPUTemp()}ºC";
+                RAM.Text = $"{g.getRAM()}MB";
+                CPUTemp.Text = $"{g.getCPUTemp()}ºC";
                 //For drawing the graph, could likely move into it's own function as well which would return a Polyline object 
                 double xMax = Graph.Width;
                 double yMax = Graph.Height;
-                int currentY = 0;
+                double currentY = 0;
                 //The canvas uses the top left as (0,0)
-                currentY = Convert.ToInt32(yMax) - g.getCPUUtil();
+                currentY = g.graphCalc(Convert.ToInt32(yMax), graphView);
                 points.Add(new Point(x, currentY));
                 //Increments the x value along the graph, smaller the x value, the tighter the points on the graph and thus the more points shown before the graph resets
-                x += 5;
+                x += 8;
                 Polyline polyline = new Polyline();
                 polyline.StrokeThickness = 1;
                 polyline.Stroke = Brushes.White;
                 polyline.Points = points;
                 Graph.Children.Add(polyline);
-                if (x == xMax)
+                //Current implementation results in losing the final value for the cycle
+                if (x >= xMax)
                 {
                     x = 0;
                     points.Clear();
                 }
             });
+
+        }
+        private void cpuTempClick(object sender, RoutedEventArgs e)
+        {
+            graphView = "cpuTemp";
+            CurrentGraph.Text = "CPU Tempurature";
+            //Resets the graph
+            x = 0;
+            points.Clear();
+        }
+        private void cpuUtilClick(object sender, RoutedEventArgs e)
+        {
+            graphView = "cpuUtil";
+            CurrentGraph.Text = "CPU Utilisation";
+            //Resets the graph
+            x = 0;
+            points.Clear();
+        }
+        private void gpuTempClick(object sender, RoutedEventArgs e)
+        {
+            graphView = "gpuTemp";
+            CurrentGraph.Text = "GPU Tempurature";
+            //Resets the graph
+            x = 0;
+            points.Clear();
+        }
+        private void ramClick(object sender, RoutedEventArgs e)
+        {
+            graphView = "ramUtil";
+            CurrentGraph.Text = "RAM Utilisation";
+            //Resets the graph
+            x = 0;
+            points.Clear();
         }
 
     }

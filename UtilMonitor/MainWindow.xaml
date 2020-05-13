@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UtilMonitor"
         mc:Ignorable="d"
-        Title="Simple HW Monitor" Height="243.667" Width="299" FontFamily="Lucida Sans" ScrollViewer.CanContentScroll="True">
-    <Grid Background="#FF322E2E" Margin="0,0,0,-4">
+        Title="Simple HW Monitor" Height="278.334" Width="301" FontFamily="Lucida Sans" ScrollViewer.CanContentScroll="True">
+    <Grid Background="#FF322E2E" Margin="0,0,0,-34" Height="247" VerticalAlignment="Top">
         <Grid.RowDefinitions>
             <RowDefinition Height="5*"/>
             <RowDefinition/>
@@ -20,13 +20,15 @@
         <TextBlock HorizontalAlignment="Left" Margin="10,29,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="65" FontFamily="Roboto Thin" Foreground="#FFFDFDFD" Background="#FF7C7B7B"><Run Text="C"/><Run Text="PU Temp:"/></TextBlock>
         <TextBlock Name ="CPUTemp" HorizontalAlignment="Left" Margin="70,29,0,0" TextWrapping="Wrap" Text="null" VerticalAlignment="Top" RenderTransformOrigin="-0.612,0.625" FontFamily="Roboto Thin" Foreground="#FFFDFDFD" Background="#FF7C7B7B" Width="65"/>
         <Canvas Name ="Graph" HorizontalAlignment="Left" Height="100
-                " Margin="10,57,0,0" VerticalAlignment="Top" Width="270" Background="#FF7C7B7B" Grid.RowSpan="2"/>
-        <Button Content="CPU Util" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="60"/>
-        <Button Content="CPU Temp" HorizontalAlignment="Left" Margin="75,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="64"/>
-        <Button Content="GPU Temp" HorizontalAlignment="Left" Margin="144,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="70"/>
-        <Button Content="RAM" HorizontalAlignment="Left" Margin="219,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="61"/>
-        <Label Content="Currently Displaying:" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" Foreground="White"/>
-        <TextBlock Name="CurrentGraph" HorizontalAlignment="Left" Margin="142,162,0,0" TextWrapping="Wrap" Text="CPU Utilisation" VerticalAlignment="Top" Foreground="White"/>
+                " Margin="10,57,0,0" VerticalAlignment="Top" Width="270" Background="#FF7C7B7B"/>
+        <Button Content="CPUUtil" Click="cpuUtilClick" HorizontalAlignment="Left" Margin="10,183,0,0" VerticalAlignment="Top" Width="60" FontFamily="Roboto Thin"/>
+        <Button Content="CPUTemp" Click="cpuTempClick" HorizontalAlignment="Left" Margin="75,183,0,0" VerticalAlignment="Top" Width="64" FontFamily="Roboto Thin"/>
+        <Button Content="GPUTemp" Click="gpuTempClick" HorizontalAlignment="Left" Margin="144,183,0,0" VerticalAlignment="Top" Width="70" FontFamily="Roboto Thin"/>
+        <Button Content="RAM" Click="ramClick" HorizontalAlignment="Left" Margin="220,183,0,0" VerticalAlignment="Top" Width="61" FontFamily="Roboto Thin"/>
+        <Label Content="Currently Displaying:" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" Foreground="White" Height="29" Grid.RowSpan="2" FontFamily="Roboto Thin"/>
+        <TextBlock Name="CurrentGraph" HorizontalAlignment="Left" Margin="142,162,0,0" TextWrapping="Wrap" Text="CPU Utilisation" VerticalAlignment="Top" Foreground="White" FontFamily="Roboto Thin"/>
+        <TextBlock Name ="YAxisTop"  HorizontalAlignment="Left" Margin="10,47,0,0" TextWrapping="Wrap" Text="100%" VerticalAlignment="Top" Foreground="White" FontFamily="Roboto Thin" FontSize="10"/>
+        <Button Content="Settings" HorizontalAlignment="Left" Margin="65,10,0,0" VerticalAlignment="Top" Width="149" FontFamily="Roboto Thin" Grid.Row="1"/>
 
 
 
