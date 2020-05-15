@@ -33,6 +33,9 @@ namespace UtilMonitor
             Button ramBtn = new Button();
             ramBtn.Name = "RAM";
             ramBtn.Click += ramClick;
+            Button settingsBtn = new Button();
+            ramBtn.Name = "Settings";
+            ramBtn.Click += settingsClick;
             //How frequently the timedEvent function is ran, in seconds
             remainTimer.Interval = TimeSpan.FromSeconds(0.25);
             remainTimer.Start();
@@ -73,6 +76,7 @@ namespace UtilMonitor
             });
 
         }
+        //Button clicks, feels messy like this but unsure of a better way to organise them
         private void cpuTempClick(object sender, RoutedEventArgs e)
         {
             graphView = "cpuTemp";
@@ -106,6 +110,11 @@ namespace UtilMonitor
             points.Clear();
         }
 
+        private void settingsClick(object sender, RoutedEventArgs e)
+        {
+            Settings settingsWin = new Settings();
+            settingsWin.Show();
+        }
     }
 
 }

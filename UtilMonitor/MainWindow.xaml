@@ -28,7 +28,7 @@
         <Label Content="Currently Displaying:" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" Foreground="White" Height="29" Grid.RowSpan="2" FontFamily="Roboto Thin"/>
         <TextBlock Name="CurrentGraph" HorizontalAlignment="Left" Margin="142,162,0,0" TextWrapping="Wrap" Text="CPU Utilisation" VerticalAlignment="Top" Foreground="White" FontFamily="Roboto Thin"/>
         <TextBlock Name ="YAxisTop"  HorizontalAlignment="Left" Margin="10,47,0,0" TextWrapping="Wrap" Text="100%" VerticalAlignment="Top" Foreground="White" FontFamily="Roboto Thin" FontSize="10"/>
-        <Button Content="Settings" HorizontalAlignment="Left" Margin="65,10,0,0" VerticalAlignment="Top" Width="149" FontFamily="Roboto Thin" Grid.Row="1"/>
+        <Button Content="Settings" Click="settingsClick" HorizontalAlignment="Left" Margin="65,10,0,0" VerticalAlignment="Top" Width="149" FontFamily="Roboto Thin" Grid.Row="1"/>
 
 
 

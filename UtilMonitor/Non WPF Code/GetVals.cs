@@ -13,7 +13,7 @@ public class Getter
     protected Computer myComputer;
     private int gpuTemp, ramUtil, cpuTemp, gpuUtil;
     private double cpuUtil;
-
+    public string GPUName, CPUName;
     //Default constructor
     public Getter()
     {
@@ -22,7 +22,28 @@ public class Getter
         //Was unable to find a way to get GPU util, was using: https://stackoverflow.com/questions/56830434/c-sharp-get-total-usage-of-gpu-in-percentage
         //gpuCounter = new PerformanceCounter("GPU Engine", "Utilization Percentage", "");
         ulong totalMemory = getSystemMemory();
+        myComputer = new Computer();
+        myComputer.GPUEnabled = true;
+        myComputer.CPUEnabled = true;
+        myComputer.Open();
+        foreach (var hardwareItem in myComputer.Hardware)
+        {
+            //Checks for GPU of either manufacturer, interestingly still lists AMD cards as ATI so will need to test on AMD hardware. Also unclear if this will work on Intel iGPUs
+            if (hardwareItem.HardwareType == HardwareType.GpuNvidia || hardwareItem.HardwareType == HardwareType.GpuAti)
+            {
+                GPUName = hardwareItem.Name;
+            }
+            else if (hardwareItem.HardwareType == HardwareType.CPU)
+            {
+                CPUName = hardwareItem.Name;
+            }
+            //Quits the application thus
+            if (GPUName != null && CPUName != null)
+            {
+                break;
+            }
 
+        }
     }
     public void update()
     {
@@ -36,14 +57,20 @@ public class Getter
         myComputer.Open();
         foreach (var hardwareItem in myComputer.Hardware)
         {
-            //Checks for GPU of either manufacturer, interestingly still lists AMD cards as ATI so will need to test on AMD hardware. Also unclear if this will work on Intel iGPUs
+            //Checks for GPU of either manufacturer, interestingly still lists AMD cards as ATI so will need to test on AMD hardware. Also unclear if this will work on Intel iGPUs. Tested with an Nvidia graphics card thus far
             if (hardwareItem.HardwareType == HardwareType.GpuNvidia || hardwareItem.HardwareType == HardwareType.GpuAti)
             {
+                //todo: Add a boolean that marks each one as done so can exit the foreach
+                GPUName = hardwareItem.Name;
                 foreach (var sensor in hardwareItem.Sensors)
                 {
                     if (sensor.SensorType == SensorType.Temperature)
                     {
                         gpuTemp = Convert.ToInt32(sensor.Value);
+                    }
+                    if (sensor.SensorType == SensorType.Load)
+                    {
+                        gpuUtil = Convert.ToInt32(sensor.Value);
                     }
                 }
             }
@@ -57,6 +84,11 @@ public class Getter
                         cpuTemp = Convert.ToInt32(sensor.Value);
                     }
                 }
+            }
+            //This will need unique identifiers for each HDD, i.e. tested system uses 
+            else if (hardwareItem.HardwareType == HardwareType.HDD) 
+            {
+
             }
         }
         // Essentially destroies the myComputer object.
