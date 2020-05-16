@@ -28,7 +28,8 @@ public class Getter
         myComputer.Open();
         foreach (var hardwareItem in myComputer.Hardware)
         {
-            //Checks for GPU of either manufacturer, interestingly still lists AMD cards as ATI so will need to test on AMD hardware. Also unclear if this will work on Intel iGPUs
+            //Checks for GPU of either manufacturer, interestingly still lists AMD cards as ATI.
+            // Works on AMD hardware, does not recognise intel iGPUs, some laptops do not seem to allow temp monitoring
             if (hardwareItem.HardwareType == HardwareType.GpuNvidia || hardwareItem.HardwareType == HardwareType.GpuAti)
             {
                 GPUName = hardwareItem.Name;
