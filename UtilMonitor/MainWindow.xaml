@@ -5,33 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UtilMonitor"
         mc:Ignorable="d"
-        Title="Simple HW Monitor" Height="278.334" Width="301" FontFamily="Lucida Sans" ScrollViewer.CanContentScroll="True">
-    <Grid Background="#FF322E2E" Margin="0,0,-2,-17" Height="264" VerticalAlignment="Top">
+        Title="Simple HW Monitor" Height="277.667" Width="301" FontFamily="Lucida Sans" ScrollViewer.CanContentScroll="True" Background="#FF322E2E">
+    <Grid Background="#FF322E2E" Margin="0,0,2,-31" Height="278" VerticalAlignment="Top">
         <Grid.RowDefinitions>
-            <RowDefinition Height="5*"/>
-            <RowDefinition/>
+            <RowDefinition Height="213*"/>
+            <RowDefinition Height="29*"/>
+            <RowDefinition Height="16*"/>
+            <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
-        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" FontFamily="Roboto Thin" Foreground="#FFFDFDFD" Background="#FF7C7B7B"><Run Text="CPU Util"/><Run Text=":"/></TextBlock>
-        <TextBlock Name ="CPUUtil" HorizontalAlignment="Left" Margin="70,10,0,0" TextWrapping="Wrap" Text="null" VerticalAlignment="Top" RenderTransformOrigin="-0.612,0.625" FontFamily="Roboto Thin" Foreground="#FFFDFDFD" Background="#FF7C7B7B" Width="65"/>
-        <TextBlock HorizontalAlignment="Left" Margin="140,29,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="65" FontFamily="Roboto Thin" Foreground="#FFFDFDFD" Background="#FF7C7B7B"><Run Text="G"/><Run Text="PU Temp:"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" FontFamily="Roboto Thin" Foreground="#FFFDFDFD" Background="#FF7C7B7B" Height="14"><Run Text="CPU Util"/><Run Text=":"/></TextBlock>
+        <TextBlock Name ="CPUUtil" HorizontalAlignment="Left" Margin="70,10,0,0" TextWrapping="Wrap" Text="null" VerticalAlignment="Top" RenderTransformOrigin="-0.612,0.625" FontFamily="Roboto Thin" Foreground="#FFFDFDFD" Background="#FF7C7B7B" Width="65" Height="14"/>
+        <TextBlock HorizontalAlignment="Left" Margin="140,29,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="65" FontFamily="Roboto Thin" Foreground="#FFFDFDFD" Background="#FF7C7B7B" Height="14"><Run Text="G"/><Run Text="PU Temp:"/></TextBlock>
         <TextBlock Name ="GPUTemp" HorizontalAlignment="Left" Margin="205,29,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76" FontFamily="Roboto Thin" Height="14" Foreground="#FFFDFDFD" Background="#FF7C7B7B"><Run Text="null"/><LineBreak/><Run/></TextBlock>
-        <TextBlock HorizontalAlignment="Left" Margin="140,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="65" FontFamily="Roboto Thin" Foreground="#FFFDFDFD" Background="#FF7C7B7B"><Run Text="Free R"/><Run Text="AM"/><Run Text=":"/></TextBlock>
-        <TextBlock Name ="RAM" HorizontalAlignment="Left" Margin="205,10,0,0" TextWrapping="Wrap" Text="null" VerticalAlignment="Top" Width="76" FontFamily="Roboto Thin" Foreground="#FFFDFDFD" Background="#FF7C7B7B"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,29,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="65" FontFamily="Roboto Thin" Foreground="#FFFDFDFD" Background="#FF7C7B7B"><Run Text="C"/><Run Text="PU Temp:"/></TextBlock>
-        <TextBlock Name ="CPUTemp" HorizontalAlignment="Left" Margin="70,29,0,0" TextWrapping="Wrap" Text="null" VerticalAlignment="Top" RenderTransformOrigin="-0.612,0.625" FontFamily="Roboto Thin" Foreground="#FFFDFDFD" Background="#FF7C7B7B" Width="65"/>
+        <TextBlock HorizontalAlignment="Left" Margin="140,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="65" FontFamily="Roboto Thin" Foreground="#FFFDFDFD" Background="#FF7C7B7B" Height="14"><Run Text="Free R"/><Run Text="AM"/><Run Text=":"/></TextBlock>
+        <TextBlock Name ="RAM" HorizontalAlignment="Left" Margin="205,10,0,0" TextWrapping="Wrap" Text="null" VerticalAlignment="Top" Width="76" FontFamily="Roboto Thin" Foreground="#FFFDFDFD" Background="#FF7C7B7B" Height="14"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,29,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="65" FontFamily="Roboto Thin" Foreground="#FFFDFDFD" Background="#FF7C7B7B" Height="14"><Run Text="C"/><Run Text="PU Temp:"/></TextBlock>
+        <TextBlock Name ="CPUTemp" HorizontalAlignment="Left" Margin="70,29,0,0" TextWrapping="Wrap" Text="null" VerticalAlignment="Top" RenderTransformOrigin="-0.612,0.625" FontFamily="Roboto Thin" Foreground="#FFFDFDFD" Background="#FF7C7B7B" Width="65" Height="14"/>
         <Canvas Name ="Graph" HorizontalAlignment="Left" Height="100
                 " Margin="8,71,0,0" VerticalAlignment="Top" Width="270" Background="#FF7C7B7B"/>
-        <Button Content="CPUUtil" Click="cpuUtilClick" HorizontalAlignment="Left" Margin="10,192,0,0" VerticalAlignment="Top" Width="60" FontFamily="Roboto Thin"/>
-        <Button Content="CPUTemp" Click="cpuTempClick" HorizontalAlignment="Left" Margin="75,192,0,0" VerticalAlignment="Top" Width="64" FontFamily="Roboto Thin"/>
-        <Button Content="GPUTemp" Click="gpuTempClick" HorizontalAlignment="Left" Margin="144,192,0,0" VerticalAlignment="Top" Width="70" FontFamily="Roboto Thin"/>
-        <Button Content="RAM" Click="ramClick" HorizontalAlignment="Left" Margin="220,192,0,0" VerticalAlignment="Top" Width="61" FontFamily="Roboto Thin"/>
-        <Label Content="Currently Displaying:" HorizontalAlignment="Left" Margin="8,168,0,0" VerticalAlignment="Top" Foreground="White" Height="29" FontFamily="Roboto Thin"/>
-        <TextBlock Name="CurrentGraph" HorizontalAlignment="Left" Margin="140,173,0,0" TextWrapping="Wrap" Text="CPU Utilisation" VerticalAlignment="Top" Foreground="White" FontFamily="Roboto Thin"/>
-        <TextBlock Name ="YAxisTop"  HorizontalAlignment="Left" Margin="8,59,0,0" TextWrapping="Wrap" Text="100%" VerticalAlignment="Top" Foreground="White" FontFamily="Roboto Thin" FontSize="10"/>
-        <Button Content="Settings" Click="settingsClick" HorizontalAlignment="Left" Margin="65,16,0,0" VerticalAlignment="Top" Width="149" FontFamily="Roboto Thin" Grid.Row="1"/>
-        <TextBlock HorizontalAlignment="Left" Margin="140,47,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="65" FontFamily="Roboto Thin" Foreground="#FFFDFDFD" Background="#FF7C7B7B"><Run Text="G"/><Run Text="PU "/><Run Text="Load"/><Run Text=":"/></TextBlock>
+        <Label Content="Currently Displaying:" HorizontalAlignment="Left" Margin="8,168,0,0" VerticalAlignment="Top" Foreground="White" Height="29" FontFamily="Roboto Thin" Width="115"/>
+        <TextBlock Name="CurrentGraph" HorizontalAlignment="Left" Margin="140,173,0,0" TextWrapping="Wrap" Text="CPU Utilisation" VerticalAlignment="Top" Foreground="White" FontFamily="Roboto Thin" Height="14" Width="77"/>
+        <TextBlock Name ="YAxisTop"  HorizontalAlignment="Left" Margin="8,59,0,0" TextWrapping="Wrap" Text="100%" VerticalAlignment="Top" Foreground="White" FontFamily="Roboto Thin" FontSize="10" Height="12" Width="24"/>
+        <Button Content="Settings" Click="settingsClick" HorizontalAlignment="Left" Margin="68,10,0,0" VerticalAlignment="Top" Width="149" FontFamily="Roboto Thin" Grid.Row="1" Height="18"/>
+        <TextBlock HorizontalAlignment="Left" Margin="140,47,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="65" FontFamily="Roboto Thin" Foreground="#FFFDFDFD" Background="#FF7C7B7B" Height="14"><Run Text="G"/><Run Text="PU "/><Run Text="Load"/><Run Text=":"/></TextBlock>
         <TextBlock x:Name ="GPULoad" HorizontalAlignment="Left" Margin="205,47,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76" FontFamily="Roboto Thin" Height="14" Foreground="#FFFDFDFD" Background="#FF7C7B7B"><Run Text="null"/><LineBreak/><Run/></TextBlock>
-        <ComboBox Name ="Drives" Loaded="Drives_Loaded" SelectionChanged="Drives_SelectionChanged" HorizontalAlignment="Left" Margin="62,215,0,0" VerticalAlignment="Top" Width="155" Grid.RowSpan="2"/>
+        <ComboBox Name ="GraphCombo" SelectionChanged="Graph_SelectionChanged" HorizontalAlignment="Left" Margin="43,192,0,0" VerticalAlignment="Top" Width="204" Height="20">
+            <ComboBoxItem>CPU Utilisation</ComboBoxItem>
+            <ComboBoxItem>CPU Temperature</ComboBoxItem>
+            <ComboBoxItem>Free RAM</ComboBoxItem>
+            <ComboBoxItem>GPU Load</ComboBoxItem>
+            <ComboBoxItem>GPU Temperature</ComboBoxItem>
+        </ComboBox>
 
 
 

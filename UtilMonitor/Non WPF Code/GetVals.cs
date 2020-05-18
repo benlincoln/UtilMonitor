@@ -149,10 +149,10 @@ public class Getter
         return Convert.ToDouble(getSystemMemory())/Math.Pow(1024,2);
     }
 
-    public List<string> getdriveList()
+   /* public List<string> getdriveList()
     {
         return storageNames;
-    }
+    }*/
     /*Allows for the different calculations for each type (graph height is 100 which allows for easy percentage calculations,
      however something like GPU temp would have the user enter max values for the graph to make the graph representative for that card 
      (i.e. in my own experience, my RTX2070S runs significantly cooler than my R9 390; thus the scale on the graph should be lower/tighter for the 2070S)   */

@@ -20,22 +20,6 @@ namespace UtilMonitor
         {
             InitializeComponent();
             remainTimer.Tick += timedEvent;
-            //Creation of buttons and their events
-            Button cpuUtilBtn = new Button();
-            cpuUtilBtn.Name = "CPUUtil";
-            cpuUtilBtn.Click += cpuUtilClick;
-            Button cpuTempBtn = new Button();
-            cpuTempBtn.Name = "CPUTemp";
-            cpuTempBtn.Click += cpuTempClick;
-            Button gpuTempBtn = new Button();
-            gpuTempBtn.Name = "GPUTemp";
-            gpuTempBtn.Click += gpuTempClick;
-            Button ramBtn = new Button();
-            ramBtn.Name = "RAM";
-            ramBtn.Click += ramClick;
-            Button settingsBtn = new Button();
-            ramBtn.Name = "Settings";
-            ramBtn.Click += settingsClick;
             //How frequently the timedEvent function is ran, in seconds
             remainTimer.Interval = TimeSpan.FromSeconds(0.25);
             remainTimer.Start();
@@ -78,58 +62,45 @@ namespace UtilMonitor
 
         }
         
-        //Button clicks, feels messy like this but unsure of a better way to organise them
-        private void cpuTempClick(object sender, RoutedEventArgs e)
-        {
-            graphView = "cpuTemp";
-            CurrentGraph.Text = "CPU Tempurature";
-            //Resets the graph
-            x = 0;
-            points.Clear();
-        }
-        private void cpuUtilClick(object sender, RoutedEventArgs e)
-        {
-            graphView = "cpuUtil";
-            CurrentGraph.Text = "CPU Utilisation";
-            //Resets the graph
-            x = 0;
-            points.Clear();
-        }
-        private void gpuTempClick(object sender, RoutedEventArgs e)
-        {
-            graphView = "gpuTemp";
-            CurrentGraph.Text = "GPU Tempurature";
-            //Resets the graph
-            x = 0;
-            points.Clear();
-        }
-        private void ramClick(object sender, RoutedEventArgs e)
-        {
-            graphView = "ramUtil";
-            CurrentGraph.Text = "RAM Utilisation";
-            //Resets the graph
-            x = 0;
-            points.Clear();
-        }
-
         private void settingsClick(object sender, RoutedEventArgs e)
         {
             Settings settingsWin = new Settings();
             settingsWin.Show();
         }
 
-        private void Drives_Loaded(object sender, RoutedEventArgs e)
+        /*private void Drives_Loaded(object sender, RoutedEventArgs e)
         {
             var drivesVar = sender as ComboBox;
             drivesVar.ItemsSource = g.getdriveList();
             drivesVar.SelectedIndex = 0; 
-        }
+        }*/
 
-        private void Drives_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Graph_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var drivesVar = sender as ComboBox;
             string selected = drivesVar.SelectedItem as string;
-            MessageBox.Show(selected);
+            x = 0;
+            points.Clear();
+            switch (selected)
+            {
+                case "CPU Utilisation":
+                    graphView = "cpuUtil";
+                    CurrentGraph.Text = "CPU Utilisation";
+                    break;
+                case "CPU Tempurature":
+                    graphView = "cpuTemp";
+                    CurrentGraph.Text = "CPU Tempurature";
+                    break;
+                case "Free RAM":
+                    graphView = "ramUtil";
+                    CurrentGraph.Text = "RAM Utilisation";
+                    break;
+                case "GPU Temp":
+                    graphView = "gpuTemp";
+                    CurrentGraph.Text = "GPU Tempurature";
+                    break;
+
+            }
         }
     }
 
