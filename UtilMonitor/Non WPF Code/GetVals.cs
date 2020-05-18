@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+//This uses open source software Open Hardware Monitor
 using OpenHardwareMonitor.Hardware;
 public class Getter
 {
@@ -9,11 +10,11 @@ public class Getter
     protected PerformanceCounter ramCounter;
     
 
-    //This uses open source software Open Hardware Monitor
     protected Computer myComputer;
-    private int gpuTemp, ramUtil, cpuTemp, gpuUtil;
+    private int gpuTemp, ramUtil, cpuTemp, gpuLoad;
     private double cpuUtil;
     public string GPUName, CPUName;
+    //private List<string> storageNames = new List<string>();
     //Default constructor
     public Getter()
     {
@@ -28,8 +29,7 @@ public class Getter
         myComputer.Open();
         foreach (var hardwareItem in myComputer.Hardware)
         {
-            //Checks for GPU of either manufacturer, interestingly still lists AMD cards as ATI.
-            // Works on AMD hardware, does not recognise intel iGPUs, some laptops do not seem to allow temp monitoring
+            //Gets names for the CPU and GPU. Open HW Monitor does not support intel iGPUs.   
             if (hardwareItem.HardwareType == HardwareType.GpuNvidia || hardwareItem.HardwareType == HardwareType.GpuAti)
             {
                 GPUName = hardwareItem.Name;
@@ -45,7 +45,23 @@ public class Getter
             }
 
         }
+        //storageNames = buildDriveList(myComputer);
     }
+    //Seemingly does not detect drives, however can adapt this code to accomodate for multi cpu/gpu configs.
+    /*private List<string> buildDriveList(Computer computer)
+    {
+        List<string> drives = new List<string>();
+        foreach (var hardwareItem in myComputer.Hardware)
+        {
+              
+            if (hardwareItem.HardwareType == HardwareType.HDD)
+            {
+                string name = hardwareItem.Name;
+                drives.Add(name);
+            }
+        }
+        return drives;
+    }*/
     public void update()
     {
         //Updates each value for the getters
@@ -58,7 +74,8 @@ public class Getter
         myComputer.Open();
         foreach (var hardwareItem in myComputer.Hardware)
         {
-            //Checks for GPU of either manufacturer, interestingly still lists AMD cards as ATI so will need to test on AMD hardware. Also unclear if this will work on Intel iGPUs. Tested with an Nvidia graphics card thus far
+            //Checks for GPU of either manufacturer, interestingly still lists AMD cards as ATI.
+            // Works on AMD hardware, does not recognise intel iGPUs, some laptops and potentially some OEM MoBos do not seem to allow temp monitoring
             if (hardwareItem.HardwareType == HardwareType.GpuNvidia || hardwareItem.HardwareType == HardwareType.GpuAti)
             {
                 //todo: Add a boolean that marks each one as done so can exit the foreach
@@ -71,7 +88,8 @@ public class Getter
                     }
                     if (sensor.SensorType == SensorType.Load)
                     {
-                        gpuUtil = Convert.ToInt32(sensor.Value);
+                        //This is called load as opposed to util, as load and utilisation appear to be two different things (MSI Afterburner returns a different value when viewing GPU utilisation)
+                        gpuLoad = Convert.ToInt32(sensor.Value);
                     }
                 }
             }
@@ -121,14 +139,19 @@ public class Getter
     {
         return ramUtil;
     }
-    public int getGPUUtil()
+    public int getGPULoad()
     {
-        return gpuUtil;
+        return gpuLoad;
     }
     public double getSysRAM()
     {
         //Converts the avaliable ram into a double in megabytes
         return Convert.ToDouble(getSystemMemory())/Math.Pow(1024,2);
+    }
+
+    public List<string> getdriveList()
+    {
+        return storageNames;
     }
     /*Allows for the different calculations for each type (graph height is 100 which allows for easy percentage calculations,
      however something like GPU temp would have the user enter max values for the graph to make the graph representative for that card 

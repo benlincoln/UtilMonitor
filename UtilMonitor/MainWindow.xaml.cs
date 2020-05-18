@@ -53,6 +53,7 @@ namespace UtilMonitor
                 GPUTemp.Text = $"{g.getGPUTemp()}ºC";
                 RAM.Text = $"{g.getRAM()}MB";
                 CPUTemp.Text = $"{g.getCPUTemp()}ºC";
+                GPULoad.Text = $"{g.getGPULoad()}%";
                 //For drawing the graph, could likely move into it's own function as well which would return a Polyline object 
                 double xMax = Graph.Width;
                 double yMax = Graph.Height;
@@ -76,6 +77,7 @@ namespace UtilMonitor
             });
 
         }
+        
         //Button clicks, feels messy like this but unsure of a better way to organise them
         private void cpuTempClick(object sender, RoutedEventArgs e)
         {
@@ -114,6 +116,20 @@ namespace UtilMonitor
         {
             Settings settingsWin = new Settings();
             settingsWin.Show();
+        }
+
+        private void Drives_Loaded(object sender, RoutedEventArgs e)
+        {
+            var drivesVar = sender as ComboBox;
+            drivesVar.ItemsSource = g.getdriveList();
+            drivesVar.SelectedIndex = 0; 
+        }
+
+        private void Drives_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var drivesVar = sender as ComboBox;
+            string selected = drivesVar.SelectedItem as string;
+            MessageBox.Show(selected);
         }
     }
 
