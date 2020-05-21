@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using UtilMonitor.Non_WPF_Code;
 
 namespace UtilMonitor
 {
@@ -12,7 +13,7 @@ namespace UtilMonitor
     public partial class MainWindow : Window
     {
         private System.Windows.Threading.DispatcherTimer remainTimer = new System.Windows.Threading.DispatcherTimer();
-        Getter g = new Getter();
+        public Getter g = new Getter();
         int x = 0;
         string graphView = "cpuUtil";
         PointCollection points = new PointCollection();
@@ -77,27 +78,34 @@ namespace UtilMonitor
 
         private void Graph_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var drivesVar = sender as ComboBox;
-            string selected = drivesVar.SelectedItem as string;
+
+            string selected = GraphCombo.SelectedItem.ToString();
+            // The above contains extra stuff we don't want with a colon at the end so we split using said colon
+            var SplitSelected = selected.Split(':');
             x = 0;
             points.Clear();
-            switch (selected)
+            switch (SplitSelected[1])
             {
-                case "CPU Utilisation":
+                //There is a space after the colon
+                case " CPU Utilisation":
                     graphView = "cpuUtil";
                     CurrentGraph.Text = "CPU Utilisation";
+                    YAxisTop.Text = "100%";
                     break;
-                case "CPU Tempurature":
+                case " CPU Tempurature":
                     graphView = "cpuTemp";
                     CurrentGraph.Text = "CPU Tempurature";
+                    YAxisTop.Text = $"{configReadWriter.readConfig("tempMaxCPU")}ºC";
                     break;
-                case "Free RAM":
+                case " Free RAM":
                     graphView = "ramUtil";
                     CurrentGraph.Text = "RAM Utilisation";
+                    YAxisTop.Text = "100%";
                     break;
-                case "GPU Temp":
+                case " GPU Tempurature":
                     graphView = "gpuTemp";
                     CurrentGraph.Text = "GPU Tempurature";
+                    YAxisTop.Text = $"{configReadWriter.readConfig("tempMaxGPU")}ºC";
                     break;
 
             }

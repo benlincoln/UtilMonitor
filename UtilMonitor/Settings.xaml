@@ -5,14 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UtilMonitor"
         mc:Ignorable="d"
-        Title="Settings" Height="450" Width="800">
+        Title="Settings" Height="274.934" Width="470.027">
     <Grid x:Name="Settings1" Background="#FF322E2E">
-        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="131" Foreground="White" Background="#FF7C7B7B"><Run Text="Detected System RAM"/><Run Text=":"/></TextBlock>
-        <TextBlock Name ="totalRam" HorizontalAlignment="Left" Margin="146,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Foreground="White" Background="#FF7C7B7B" Text="null"/>
-        <TextBlock HorizontalAlignment="Left" Margin="298,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="131" Foreground="White" Background="#FF7C7B7B"><Run Text="Detected "/><Run Text="Video Card"/><Run Text=":"/></TextBlock>
-        <TextBlock Name ="gpuName" HorizontalAlignment="Left" Margin="434,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="304" Foreground="White" Background="#FF7C7B7B" Text="null"/>
-        <TextBlock HorizontalAlignment="Left" Margin="298,38,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="131" Foreground="White" Background="#FF7C7B7B" Text="Detected CPU:"/>
-        <TextBlock Name ="cpuName" HorizontalAlignment="Left" Margin="434,38,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="304" Foreground="White" Background="#FF7C7B7B" Text="null"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="131" Foreground="White" Background="#FF7C7B7B" FontFamily="Roboto Thin" Height="14"><Run Text="Detected System RAM"/><Run Text=":"/></TextBlock>
+        <TextBlock Name ="totalRam" HorizontalAlignment="Left" Margin="146,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Foreground="White" Background="#FF7C7B7B" Text="null" FontFamily="Roboto Thin" Height="14"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,39,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="131" Foreground="White" Background="#FF7C7B7B" FontFamily="Roboto Thin" Height="14"><Run Text="Detected "/><Run Text="Video Card"/><Run Text=":"/></TextBlock>
+        <TextBlock Name ="gpuName" HorizontalAlignment="Left" Margin="146,39,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="304" Foreground="White" Background="#FF7C7B7B" Text="null" FontFamily="Roboto Thin" Height="14"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,67,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="131" Foreground="White" Background="#FF7C7B7B" Text="Detected CPU:" FontFamily="Roboto Thin" Height="14"/>
+        <TextBlock Name ="cpuName" HorizontalAlignment="Left" Margin="146,67,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="304" Foreground="White" Background="#FF7C7B7B" Text="null" FontFamily="Roboto Thin" Height="14"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,98,0,0" TextWrapping="Wrap" Text="CPU Temp Max Value" VerticalAlignment="Top" Foreground="White" FontFamily="Roboto Thin" Height="14" Width="112"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" FontFamily="Roboto Thin" Height="14" Width="131"><Run Text="G"/><Run Text="PU Temp Max Value"/></TextBlock>
+        <TextBox Name ="CPUTemp" HorizontalAlignment="Left" PreviewTextInput="CPUTemp_PreviewTextInput"  Height="23" Margin="127,95,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name ="GPUTemp" HorizontalAlignment="Left" PreviewTextInput="GPUTemp_PreviewTextInput"  Height="23" Margin="127,148,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Apply"  HorizontalAlignment="Left" Margin="375,214,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
 
     </Grid>
 </Window>

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Configuration;
 //This uses open source software Open Hardware Monitor
 using OpenHardwareMonitor.Hardware;
+using UtilMonitor.Non_WPF_Code;
 public class Getter
 {
     //These two use WMI for getting info such as CPU util and RAM avaliability
@@ -11,8 +13,8 @@ public class Getter
     
 
     protected Computer myComputer;
-    private int gpuTemp, ramUtil, cpuTemp, gpuLoad;
-    private double cpuUtil;
+    private int gpuTemp, ramUtil, cpuTemp, gpuLoad, maxVal;
+    private double cpuUtil, relativePercent;
     public string GPUName, CPUName;
     //private List<string> storageNames = new List<string>();
     //Default constructor
@@ -20,7 +22,6 @@ public class Getter
     {
         cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
         ramCounter = new PerformanceCounter("Memory", "Available MBytes");
-        //Was unable to find a way to get GPU util, was using: https://stackoverflow.com/questions/56830434/c-sharp-get-total-usage-of-gpu-in-percentage
         //gpuCounter = new PerformanceCounter("GPU Engine", "Utilization Percentage", "");
         ulong totalMemory = getSystemMemory();
         myComputer = new Computer();
@@ -148,14 +149,13 @@ public class Getter
         //Converts the avaliable ram into a double in megabytes
         return Convert.ToDouble(getSystemMemory())/Math.Pow(1024,2);
     }
+    
 
    /* public List<string> getdriveList()
     {
         return storageNames;
     }*/
-    /*Allows for the different calculations for each type (graph height is 100 which allows for easy percentage calculations,
-     however something like GPU temp would have the user enter max values for the graph to make the graph representative for that card 
-     (i.e. in my own experience, my RTX2070S runs significantly cooler than my R9 390; thus the scale on the graph should be lower/tighter for the 2070S)   */
+    
     public double graphCalc(int yMax, string measurement)
     {
         switch (measurement)
@@ -163,10 +163,18 @@ public class Getter
             case "cpuUtil":
                 return yMax - getCPUUtil();
             case "cpuTemp":
-                //Treating 90 celcius as "100%" as a placeholder, will allow users to change max value in settings window when implemented 
-                return yMax - (getCPUTemp()*1.111);
+                maxVal = Convert.ToInt32(configReadWriter.readConfig("tempMaxCPU"));
+                //Reassigns as double to allow percent calculation
+                double cpuTemp = getCPUTemp();
+                relativePercent = cpuTemp / maxVal;
+                relativePercent *= 100;
+                return yMax - (relativePercent);
             case "gpuTemp":
-                return yMax - (getGPUTemp() * 1.111);
+                maxVal = Convert.ToInt32(configReadWriter.readConfig("tempMaxGPU"));
+                double gpuTemp = getGPUTemp();
+                relativePercent = gpuTemp / maxVal;
+                relativePercent *= 100;
+                return yMax - (relativePercent);
             case "ramUtil":
                 //This calculates and returns the % of ram avaliable
                 return yMax - (getRAM() / getSysRAM())*100; 
