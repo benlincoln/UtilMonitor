@@ -37,6 +37,11 @@ namespace UtilMonitor
                 CPUUtil.Text = $"{g.getCPUUtil()}%";
                 GPUTemp.Text = $"{g.getGPUTemp()}ºC";
                 RAM.Text = $"{g.getRAM()}MB";
+                //Open HW Monitor cannot support Ryzen 3000 series at time of writing
+                if (g.getCPUTemp() == 0)
+                {
+                    CPUTemp.Text = "Cannot Detect";
+                }
                 CPUTemp.Text = $"{g.getCPUTemp()}ºC";
                 GPULoad.Text = $"{g.getGPULoad()}%";
                 //For drawing the graph, could likely move into it's own function as well which would return a Polyline object 
@@ -107,7 +112,11 @@ namespace UtilMonitor
                     CurrentGraph.Text = "GPU Tempurature";
                     YAxisTop.Text = $"{configReadWriter.readConfig("tempMaxGPU")}ºC";
                     break;
-
+                case " GPU Load":
+                    graphView = "gpuLoad";
+                    CurrentGraph.Text = "GPU Load";
+                    YAxisTop.Text = "100%";
+                    break;
             }
         }
     }

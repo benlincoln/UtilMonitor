@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Configuration;
-//This uses open source software Open Hardware Monitor
 using OpenHardwareMonitor.Hardware;
 using UtilMonitor.Non_WPF_Code;
 public class Getter
 {
     //These two use WMI for getting info such as CPU util and RAM avaliability
-    protected PerformanceCounter cpuCounter;
-    protected PerformanceCounter ramCounter;
+    private PerformanceCounter cpuCounter;
+    private PerformanceCounter ramCounter;
     
 
     protected Computer myComputer;
@@ -46,6 +43,14 @@ public class Getter
             }
 
         }
+        if (CPUName == null)
+        {
+            CPUName = "Could not detect CPU";
+        }
+        if (GPUName == null)
+        {
+            GPUName = "Could not detect GPU";
+        }
         //storageNames = buildDriveList(myComputer);
     }
     //Seemingly does not detect drives, however can adapt this code to accomodate for multi cpu/gpu configs.
@@ -63,6 +68,7 @@ public class Getter
         }
         return drives;
     }*/
+
     public void update()
     {
         //Updates each value for the getters
@@ -160,6 +166,7 @@ public class Getter
     {
         switch (measurement)
         {
+            
             case "cpuUtil":
                 return yMax - getCPUUtil();
             case "cpuTemp":
@@ -176,8 +183,9 @@ public class Getter
                 relativePercent *= 100;
                 return yMax - (relativePercent);
             case "ramUtil":
-                //This calculates and returns the % of ram avaliable
-                return yMax - (getRAM() / getSysRAM())*100; 
+                return yMax - (getRAM() / getSysRAM())*100;
+            case "gpuLoad":
+                return yMax - getGPULoad();
             default:
                 //Default throws an error as it means the value being measured is not recognised. Could potentially assign cpuUtil as default but this seems more appropriate
                 throw new ArgumentException("String measurement parameter in graphCalc not found");

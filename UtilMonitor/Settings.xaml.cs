@@ -46,6 +46,7 @@ namespace UtilMonitor
         {
             configReadWriter.addUpdateKey("tempMaxCPU", CPUTemp.Text);
             configReadWriter.addUpdateKey("tempMaxCPU", CPUTemp.Text);
+            System.Windows.MessageBox.Show("Settings Applied");
         }
     }
 }
