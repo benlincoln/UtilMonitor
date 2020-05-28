@@ -21,6 +21,7 @@ namespace UtilMonitor
     public partial class Settings : Window
     {
         Getter g = new Getter();
+        Notification noti = new Notification();
         public Settings()
         {
             InitializeComponent();
@@ -47,6 +48,7 @@ namespace UtilMonitor
             configReadWriter.addUpdateKey("tempMaxCPU", CPUTemp.Text);
             configReadWriter.addUpdateKey("tempMaxCPU", CPUTemp.Text);
             System.Windows.MessageBox.Show("Settings Applied");
+            noti.ShowNotification("Test");
         }
     }
 }
