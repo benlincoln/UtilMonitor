@@ -111,11 +111,12 @@ public class Getter
                     }
                 }
             }
-            //This will need unique identifiers for each HDD, i.e. tested system uses 
-            else if (hardwareItem.HardwareType == HardwareType.HDD) 
+            
+            /*else if (hardwareItem.HardwareType == HardwareType.HDD) 
             {
 
-            }
+            }*/
+
         }
         // Essentially destroies the myComputer object.
         myComputer = null;

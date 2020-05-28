@@ -26,7 +26,7 @@ namespace UtilMonitor.Non_WPF_Code
         {
             _notifyIcon.Visible = true;
             // Shows notification
-            _notifyIcon.ShowBalloonTip(3000, "Simple Hardware Monitor", message, ToolTipIcon.Info);
+            _notifyIcon.ShowBalloonTip(3000, "High Usage", message, ToolTipIcon.Info);
         }
 
     }
