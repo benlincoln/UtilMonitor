@@ -7,8 +7,8 @@ public class Getter
     //These two use WMI for getting info such as CPU util and RAM avaliability
     private PerformanceCounter cpuCounter;
     private PerformanceCounter ramCounter;
-    
 
+    Notification noti = new Notification();
     protected Computer myComputer;
     private int gpuTemp, ramUtil, cpuTemp, gpuLoad, maxVal;
     private double cpuUtil, relativePercent;
@@ -129,11 +129,14 @@ public class Getter
         return new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory;
     }
 
-    //Getters, could potentially use returning a dictionary for this, condensing the getters into a single function
+    //Getters, could potentially use the settings read/writer for notifications for high temps/ when to warn the user if their ram util goes to certain values (i.e. a user may want to know when their util goes above 70%, not just near maxxed out)
     public int getCPUUtil()
         {
+            if (Convert.ToInt32(cpuUtil) > 95)
+        {
+            noti.ShowNotification($"High CPU Utilisation: {cpuUtil}%");
+        }
             return Convert.ToInt32(cpuUtil);
-
         }
    public int getGPUTemp()
     {
@@ -145,10 +148,18 @@ public class Getter
     }
     public int getRAM()
     {
+        if (Convert.ToInt32(ramUtil) > 95)
+        {
+            noti.ShowNotification($"High RAM Utilisation: {ramUtil}% free");
+        }
         return ramUtil;
     }
     public int getGPULoad()
     {
+        if (Convert.ToInt32(gpuLoad) > 95)
+        {
+            noti.ShowNotification($"High GPU Load: {gpuLoad}%");
+        }
         return gpuLoad;
     }
     public double getSysRAM()
