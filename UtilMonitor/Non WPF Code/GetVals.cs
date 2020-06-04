@@ -156,7 +156,8 @@ public class Getter
     }
     public int getRAM()
     {
-        if (Convert.ToInt32(getRAM() / getSysRAM()) * 100 < 5 && !RAMNotified)
+        /* Commented code causes stack overflow error, unsure as to why
+         if ((getRAM() / getSysRAM()) * 100 < 5 )
         {
             noti.ShowNotification($"High RAM Utilisation");
             RAMNotified = true;
@@ -164,7 +165,7 @@ public class Getter
         else
         {
             RAMNotified = false;
-        }
+        }*/
         return freeRAM;
     }
     public int getGPULoad()

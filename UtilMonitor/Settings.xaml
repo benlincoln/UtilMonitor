@@ -23,8 +23,6 @@
         <TextBox Name ="CPUTemp" HorizontalAlignment="Left" PreviewTextInput="CPUTemp_PreviewTextInput"  Height="23" Margin="127,95,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
         <TextBox Name ="GPUTemp" HorizontalAlignment="Left" PreviewTextInput="GPUTemp_PreviewTextInput"  Height="23" Margin="127,148,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
         <Button Content="Apply"  HorizontalAlignment="Left" Margin="375,214,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,203,0,0" TextWrapping="Wrap" Text="CPU Temp Max Value" VerticalAlignment="Top" Foreground="White" FontFamily="Roboto Thin" Height="14" Width="112"/>
-        <TextBox x:Name ="CPUTemp_Copy" HorizontalAlignment="Left" PreviewTextInput="CPUTemp_PreviewTextInput"  Height="23" Margin="127,200,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
 
     </Grid>
 </Window>
