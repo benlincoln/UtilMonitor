@@ -10,9 +10,10 @@ public class Getter
 
     Notification noti = new Notification();
     protected Computer myComputer;
-    private int gpuTemp, ramUtil, cpuTemp, gpuLoad, maxVal;
+    private int gpuTemp, freeRAM, cpuTemp, gpuLoad, maxVal;
     private double cpuUtil, relativePercent;
     public string GPUName, CPUName;
+    private bool CPUNotified, GPUNotified, RAMNotified;
     //private List<string> storageNames = new List<string>();
     //Default constructor
     public Getter()
@@ -73,7 +74,7 @@ public class Getter
     {
         //Updates each value for the getters
         cpuUtil = cpuCounter.NextValue();
-        ramUtil = Convert.ToInt32(ramCounter.NextValue());
+        freeRAM = Convert.ToInt32(ramCounter.NextValue());
         // Needs a new contructor each time to get the values
         myComputer = new Computer();
         myComputer.GPUEnabled = true;
@@ -85,7 +86,7 @@ public class Getter
             // Works on AMD hardware, does not recognise intel iGPUs, some laptops and potentially some OEM MoBos do not seem to allow temp monitoring
             if (hardwareItem.HardwareType == HardwareType.GpuNvidia || hardwareItem.HardwareType == HardwareType.GpuAti)
             {
-                //todo: Add a boolean that marks each one as done so can exit the foreach
+                //todo: Add a boolean that marks each one as done so can exit the foreach as soon as possible
                 GPUName = hardwareItem.Name;
                 foreach (var sensor in hardwareItem.Sensors)
                 {
@@ -132,9 +133,16 @@ public class Getter
     //Getters, could potentially use the settings read/writer for notifications for high temps/ when to warn the user if their ram util goes to certain values (i.e. a user may want to know when their util goes above 70%, not just near maxxed out)
     public int getCPUUtil()
         {
-            if (Convert.ToInt32(cpuUtil) > 95)
+            if (Convert.ToInt32(cpuUtil) > 95 && !CPUNotified)
         {
             noti.ShowNotification($"High CPU Utilisation: {cpuUtil}%");
+            CPUNotified = true;
+        }
+            //This if and else statement is to prevent a notification being displayed every update during a high demand task, waits for it to drop back down before the oppurtunity to show another notification 
+        else
+        {
+            //Could potentially implement a timer if the PC hops between 87% and 96% for example
+            CPUNotified = false;
         }
             return Convert.ToInt32(cpuUtil);
         }
@@ -148,11 +156,11 @@ public class Getter
     }
     public int getRAM()
     {
-        if (Convert.ToInt32(ramUtil) > 95)
+        if (Convert.ToInt32(getRAM() / getSysRAM()) * 100 < 5)
         {
-            noti.ShowNotification($"High RAM Utilisation: {ramUtil}% free");
+            noti.ShowNotification($"High RAM Utilisation");
         }
-        return ramUtil;
+        return freeRAM;
     }
     public int getGPULoad()
     {
