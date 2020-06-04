@@ -156,17 +156,26 @@ public class Getter
     }
     public int getRAM()
     {
-        if (Convert.ToInt32(getRAM() / getSysRAM()) * 100 < 5)
+        if (Convert.ToInt32(getRAM() / getSysRAM()) * 100 < 5 && !RAMNotified)
         {
             noti.ShowNotification($"High RAM Utilisation");
+            RAMNotified = true;
+        }
+        else
+        {
+            RAMNotified = false;
         }
         return freeRAM;
     }
     public int getGPULoad()
     {
-        if (Convert.ToInt32(gpuLoad) > 95)
+        if (Convert.ToInt32(gpuLoad) > 95 && !GPUNotified)
         {
             noti.ShowNotification($"High GPU Load: {gpuLoad}%");
+        }
+        else
+        {
+            GPUNotified = false;
         }
         return gpuLoad;
     }
