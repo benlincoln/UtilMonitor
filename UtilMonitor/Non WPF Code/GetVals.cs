@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using OpenHardwareMonitor.Hardware;
 using UtilMonitor.Non_WPF_Code;
@@ -10,10 +11,11 @@ public class Getter
 
     Notification noti = new Notification();
     protected Computer myComputer;
-    private int gpuTemp, freeRAM, cpuTemp, gpuLoad, maxVal;
-    private double cpuUtil, relativePercent;
+    private int maxVal;
+    private double relativePercent;
     public string GPUName, CPUName;
     private bool CPUNotified, GPUNotified, RAMNotified;
+    private Dictionary<string,string> hardwareInfo = new Dictionary<string, string>();
     //private List<string> storageNames = new List<string>();
     //Default constructor
     public Getter()
@@ -22,35 +24,46 @@ public class Getter
         ramCounter = new PerformanceCounter("Memory", "Available MBytes");
         //gpuCounter = new PerformanceCounter("GPU Engine", "Utilization Percentage", "");
         ulong totalMemory = getSystemMemory();
-        myComputer = new Computer();
-        myComputer.GPUEnabled = true;
-        myComputer.CPUEnabled = true;
+        hardwareInfo.Add("CPUName", null);
+        hardwareInfo.Add("GPUName", null);
+        hardwareInfo.Add("FreeRAM", null);
+        hardwareInfo.Add("CPUTemp", null);
+        hardwareInfo.Add("GPUTemp", null);
+        hardwareInfo.Add("CPUUtil", null);
+        hardwareInfo.Add("GPULoad", null);
+        myComputer = new Computer
+        {
+            GPUEnabled = true,
+            CPUEnabled = true
+        };
         myComputer.Open();
         foreach (var hardwareItem in myComputer.Hardware)
         {
             //Gets names for the CPU and GPU. Open HW Monitor does not support intel iGPUs.   
             if (hardwareItem.HardwareType == HardwareType.GpuNvidia || hardwareItem.HardwareType == HardwareType.GpuAti)
             {
+                hardwareInfo["GPUName"] = hardwareItem.Name;
                 GPUName = hardwareItem.Name;
             }
             else if (hardwareItem.HardwareType == HardwareType.CPU)
             {
-                CPUName = hardwareItem.Name;
+                hardwareInfo["CPUName"] = hardwareItem.Name;
+                
             }
             //Quits the application thus
-            if (GPUName != null && CPUName != null)
+            if (hardwareInfo["GPUName"] != null && hardwareInfo["CPUName"] != null)
             {
                 break;
             }
 
         }
-        if (CPUName == null)
+        if (hardwareInfo["CPUName"] == null)
         {
-            CPUName = "Could not detect CPU";
+            hardwareInfo["CPUName"] = "Could not detect CPU";
         }
-        if (GPUName == null)
+        if (hardwareInfo["GPUName"] == null)
         {
-            GPUName = "Could not detect GPU";
+            hardwareInfo["GPUName"] = "Could not detect GPU";
         }
         //storageNames = buildDriveList(myComputer);
     }
@@ -73,8 +86,8 @@ public class Getter
     public void update()
     {
         //Updates each value for the getters
-        cpuUtil = cpuCounter.NextValue();
-        freeRAM = Convert.ToInt32(ramCounter.NextValue());
+        hardwareInfo["CPUUtil"] = Convert.ToString(Convert.ToInt32(cpuCounter.NextValue()));
+        hardwareInfo["FreeRAM"] = Convert.ToString(ramCounter.NextValue());
         // Needs a new contructor each time to get the values
         myComputer = new Computer();
         myComputer.GPUEnabled = true;
@@ -92,12 +105,12 @@ public class Getter
                 {
                     if (sensor.SensorType == SensorType.Temperature)
                     {
-                        gpuTemp = Convert.ToInt32(sensor.Value);
+                        hardwareInfo["GPUTemp"] = Convert.ToString(sensor.Value);
                     }
                     if (sensor.SensorType == SensorType.Load)
                     {
                         //This is called load as opposed to util, as load and utilisation appear to be two different things (MSI Afterburner returns a different value when viewing GPU utilisation)
-                        gpuLoad = Convert.ToInt32(sensor.Value);
+                        hardwareInfo["GPULoad"] = Convert.ToString(Convert.ToInt32(sensor.Value));
                     }
                 }
             }
@@ -108,7 +121,7 @@ public class Getter
                 {
                     if (sensor.SensorType == SensorType.Temperature)
                     {
-                        cpuTemp = Convert.ToInt32(sensor.Value);
+                        hardwareInfo["CPUTemp"] = Convert.ToString(sensor.Value);
                     }
                 }
             }
@@ -133,26 +146,15 @@ public class Getter
     //Getters, could potentially use the settings read/writer for notifications for high temps/ when to warn the user if their ram util goes to certain values (i.e. a user may want to know when their util goes above 70%, not just near maxxed out)
     public int getCPUUtil()
         {
-            if (Convert.ToInt32(cpuUtil) > 95 && !CPUNotified)
-        {
-            noti.ShowNotification($"High CPU Utilisation: {cpuUtil}%");
-            CPUNotified = true;
-        }
-            //This if and else statement is to prevent a notification being displayed every update during a high demand task, waits for it to drop back down before the oppurtunity to show another notification 
-        else
-        {
-            //Could potentially implement a timer if the PC hops between 87% and 96% for example
-            CPUNotified = false;
-        }
-            return Convert.ToInt32(cpuUtil);
+            return Convert.ToInt32(hardwareInfo["CPUUtil"]);
         }
    public int getGPUTemp()
     {
-        return gpuTemp;
+        return Convert.ToInt32(hardwareInfo["GPUTemp"]);
     }
     public int getCPUTemp()
     {
-        return cpuTemp;
+        return Convert.ToInt32(hardwareInfo["CPUTemp"]);
     }
     public int getRAM()
     {
@@ -166,32 +168,32 @@ public class Getter
         {
             RAMNotified = false;
         }*/
-        return freeRAM;
+        return Convert.ToInt32(hardwareInfo["FreeRAM"]);
     }
     public int getGPULoad()
     {
-        if (Convert.ToInt32(gpuLoad) > 95 && !GPUNotified)
-        {
-            noti.ShowNotification($"High GPU Load: {gpuLoad}%");
-        }
-        else
-        {
-            GPUNotified = false;
-        }
-        return gpuLoad;
+        return Convert.ToInt32(hardwareInfo["GPULoad"]);
     }
-    public double getSysRAM()
+    public int getSysRAM()
     {
         //Converts the avaliable ram into a double in megabytes
-        return Convert.ToDouble(getSystemMemory())/Math.Pow(1024,2);
+        return Convert.ToInt32(Convert.ToDouble(getSystemMemory())/Math.Pow(1024,2));
     }
-    
 
-   /* public List<string> getdriveList()
+    public string getCPUName()
     {
-        return storageNames;
-    }*/
-    
+        return hardwareInfo["CPUName"];
+    }
+    public string getGPUName()
+    {
+        return hardwareInfo["GPUName"];
+    }
+
+    /* public List<string> getdriveList()
+     {
+         return storageNames;
+     }*/
+
     public double graphCalc(int yMax, string measurement)
     {
         switch (measurement)
@@ -223,6 +225,9 @@ public class Getter
         }
         
     }
+    private void checkNotification(int value, string hardware) {
+    }
+
     }
 
 

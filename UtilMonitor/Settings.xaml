@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UtilMonitor"
         mc:Ignorable="d"
-        Title="Settings" Height="274.934" Width="470.027">
+        Title="Settings" Height="333.934" Width="512.027">
     <Grid x:Name="Settings1" Background="#FF322E2E">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -19,10 +19,20 @@
         <TextBlock Name ="cpuName" HorizontalAlignment="Left" Margin="146,67,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="304" Foreground="White" Background="#FF7C7B7B" Text="null" FontFamily="Roboto Thin" Height="14"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="10,98,0,0" TextWrapping="Wrap" Text="CPU Temp Max Value" VerticalAlignment="Top" Foreground="White" FontFamily="Roboto Thin" Height="14" Width="112"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" FontFamily="Roboto Thin" Height="14" Width="131"><Run Text="G"/><Run Text="PU Temp Max Value"/></TextBlock>
-        <TextBox Name ="CPUTemp" HorizontalAlignment="Left" PreviewTextInput="CPUTemp_PreviewTextInput"  Height="23" Margin="127,95,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <TextBox Name ="GPUTemp" HorizontalAlignment="Left" PreviewTextInput="GPUTemp_PreviewTextInput"  Height="23" Margin="127,148,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Apply"  HorizontalAlignment="Left" Margin="375,214,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,151,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" FontFamily="Roboto Thin" Height="14" Width="131"><Run Text="G"/><Run Text="PU Temp Max Value"/></TextBlock>
+        <TextBox Name ="CPUTemp" MaxLength="3" HorizontalAlignment="Left" PreviewTextInput="nonpercentPreviewTextInput"  Height="23" Margin="127,95,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name ="GPUTemp" MaxLength="3" HorizontalAlignment="Left" PreviewTextInput="nonpercentPreviewTextInput"  Height="23" Margin="127,148,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Apply"  HorizontalAlignment="Left" Margin="419,276,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,186,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" FontFamily="Roboto Thin" Height="31" Width="112"><Run Text="CPU Temp"/><Run Text=" Notification"/><Run Text=" Value"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="10,239,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" FontFamily="Roboto Thin" Height="30" Width="131"><Run Text="G"/><Run Text="PU Temp"/><LineBreak/><Run Text="Notification"/><Run Text=" Value"/></TextBlock>
+        <TextBox x:Name ="CPUTemp_Noti" MaxLength="3" HorizontalAlignment="Left" PreviewTextInput="nonpercentPreviewTextInput"  Height="23" Margin="127,186,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name ="GPUTemp_Noti" MaxLength="3" HorizontalAlignment="Left" PreviewTextInput="nonpercentPreviewTextInput"  Height="23" Margin="127,239,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBlock HorizontalAlignment="Left" Margin="257,186,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" FontFamily="Roboto Thin" Height="28" Width="112"><Run Text="RAM"/><Run Text=" "/><Run Text="Util"/><Run Text=" "/><Run/><LineBreak/><Run Text="Notification"/><Run Text=" Value"/></TextBlock>
+        <TextBox x:Name ="RamUtil_Noti" MaxLength="3" HorizontalAlignment="Left" PreviewTextInput="percentPreviewTextInput"  Height="23" Margin="374,186,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBlock HorizontalAlignment="Left" Margin="257,95,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" FontFamily="Roboto Thin" Height="29" Width="112"><Run Text="CPU "/><Run Text="Util"/><LineBreak/><Run Text="Notification"/><Run Text=" Value"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="257,148,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" FontFamily="Roboto Thin" Height="30" Width="131"><Run Text="G"/><Run Text="PU "/><Run Text="Load"/><Run Text=" "/><Run/><LineBreak/><Run Text="Notification"/><Run Text=" Value"/></TextBlock>
+        <TextBox x:Name ="CPUUtil_Noti" MaxLength="3" HorizontalAlignment="Left" PreviewTextInput="percentPreviewTextInput"  Height="23" Margin="374,95,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" />
+        <TextBox x:Name ="GPULoad_Noti" MaxLength="3" HorizontalAlignment="Left" PreviewTextInput="percentPreviewTextInput"  Height="23" Margin="374,148,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
 
     </Grid>
 </Window>

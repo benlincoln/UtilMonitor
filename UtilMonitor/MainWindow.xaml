@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UtilMonitor"
         mc:Ignorable="d"
-        Title="Simple HW Monitor" Height="277.667" Width="301" FontFamily="Lucida Sans" ScrollViewer.CanContentScroll="True" Background="#FF322E2E">
-    <Grid Background="#FF322E2E" Margin="0,0,2,-31" Height="278" VerticalAlignment="Top">
+        Title="Simple HW Monitor" Height="283.334" Width="301" FontFamily="Lucida Sans" ScrollViewer.CanContentScroll="True" Background="#FF322E2E">
+    <Grid Background="#FF322E2E" Margin="0,0,2,-34" Height="281" VerticalAlignment="Top">
         <Grid.RowDefinitions>
             <RowDefinition Height="213*"/>
             <RowDefinition Height="29*"/>

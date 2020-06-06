@@ -21,34 +21,47 @@ namespace UtilMonitor
     public partial class Settings : Window
     {
         Getter g = new Getter();
-        Notification noti = new Notification();
+        
         public Settings()
         {
             InitializeComponent();
             totalRam.Text = $"{g.getSysRAM()} MB";
-            gpuName.Text = g.GPUName;
-            cpuName.Text = g.CPUName;
+            gpuName.Text = g.getGPUName();
+            cpuName.Text = g.getCPUName();
             GPUTemp.Text = configReadWriter.readConfig("tempMaxGPU");
             CPUTemp.Text = configReadWriter.readConfig("tempMaxCPU");
+            CPUTemp_Noti.Text = configReadWriter.readConfig("tempNotiCPU");
+            GPUTemp_Noti.Text = configReadWriter.readConfig("tempNotiGPU");
+            CPUUtil_Noti.Text = configReadWriter.readConfig("utilNotiCPU");
+            RamUtil_Noti.Text = configReadWriter.readConfig("utilNotiRAM");
+            GPULoad_Noti.Text = configReadWriter.readConfig("loadNotiGPU");
         }
 
-        private void CPUTemp_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        
+        //Previously had seperate checkers for the graph max values despite using the same regex so condensed into one
+        private void nonpercentPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = RegexChecker.tempRegex.IsMatch(e.Text);
-
         }
 
-        private void GPUTemp_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void percentPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = RegexChecker.tempRegex.IsMatch(e.Text);
+            e.Handled = RegexChecker.percentRegex.IsMatch(e.Text); 
         }
+
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             configReadWriter.addUpdateKey("tempMaxCPU", CPUTemp.Text);
-            configReadWriter.addUpdateKey("tempMaxCPU", CPUTemp.Text);
-            System.Windows.MessageBox.Show("Settings Applied");
-            noti.ShowNotification("Test");
+            configReadWriter.addUpdateKey("tempMaxGPU", GPUTemp.Text);
+            configReadWriter.addUpdateKey("tempNotiGPU", GPUTemp_Noti.Text);
+            configReadWriter.addUpdateKey("tempNotiCPU", CPUTemp_Noti.Text);
+            configReadWriter.addUpdateKey("loadNotiGPU", GPULoad_Noti.Text);
+            configReadWriter.addUpdateKey("utilNotiCPU", CPUUtil_Noti.Text);
+            configReadWriter.addUpdateKey("utilNotiRAM", RamUtil_Noti.Text);
+            MessageBox.Show("Settings Applied");
+            
         }
     }
 }
