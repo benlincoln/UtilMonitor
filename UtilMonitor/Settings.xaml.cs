@@ -21,7 +21,7 @@ namespace UtilMonitor
     public partial class Settings : Window
     {
         Getter g = new Getter();
-        
+        Notification noti = new Notification();
         public Settings()
         {
             InitializeComponent();
@@ -61,6 +61,7 @@ namespace UtilMonitor
             configReadWriter.addUpdateKey("utilNotiCPU", CPUUtil_Noti.Text);
             configReadWriter.addUpdateKey("utilNotiRAM", RamUtil_Noti.Text);
             MessageBox.Show("Settings Applied");
+            noti.ShowNotification("test");
             
         }
     }

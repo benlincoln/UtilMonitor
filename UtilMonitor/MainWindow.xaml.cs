@@ -20,13 +20,13 @@ namespace UtilMonitor
         public MainWindow()
         {
             InitializeComponent();
-            remainTimer.Tick += timedEvent;
+            remainTimer.Tick += mainWindowUpdate;
             //How frequently the timedEvent function is ran, in seconds
             remainTimer.Interval = TimeSpan.FromSeconds(0.25);
             remainTimer.Start();
 
         }
-        private void timedEvent(object sender, EventArgs e)
+        private void mainWindowUpdate(object sender, EventArgs e)
         {
             //WPF requires dispatcher to be invoked to allow for code to be ran from a different thread
             Application.Current.Dispatcher.Invoke(() =>

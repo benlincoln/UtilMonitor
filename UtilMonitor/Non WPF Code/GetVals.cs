@@ -13,7 +13,6 @@ public class Getter
     protected Computer myComputer;
     private int maxVal;
     private double relativePercent;
-    public string GPUName, CPUName;
     private bool CPUNotified, GPUNotified, RAMNotified;
     private Dictionary<string,string> hardwareInfo = new Dictionary<string, string>();
     //private List<string> storageNames = new List<string>();
@@ -43,7 +42,7 @@ public class Getter
             if (hardwareItem.HardwareType == HardwareType.GpuNvidia || hardwareItem.HardwareType == HardwareType.GpuAti)
             {
                 hardwareInfo["GPUName"] = hardwareItem.Name;
-                GPUName = hardwareItem.Name;
+                
             }
             else if (hardwareItem.HardwareType == HardwareType.CPU)
             {
@@ -100,7 +99,7 @@ public class Getter
             if (hardwareItem.HardwareType == HardwareType.GpuNvidia || hardwareItem.HardwareType == HardwareType.GpuAti)
             {
                 //todo: Add a boolean that marks each one as done so can exit the foreach as soon as possible
-                GPUName = hardwareItem.Name;
+                
                 foreach (var sensor in hardwareItem.Sensors)
                 {
                     if (sensor.SensorType == SensorType.Temperature)
@@ -126,10 +125,7 @@ public class Getter
                 }
             }
             
-            /*else if (hardwareItem.HardwareType == HardwareType.HDD) 
-            {
-
-            }*/
+            
 
         }
         // Essentially destroies the myComputer object.
@@ -225,7 +221,23 @@ public class Getter
         }
         
     }
-    private void checkNotification(int value, string hardware) {
+    private void checkNotification(string hardware) {
+        if (Convert.ToInt32(configReadWriter.readConfig(hardware)) == 0)
+            {
+            // If the setting is null/0 the code will be exited without checking for a notification
+            return;
+            }
+        if (Convert.ToInt32(hardwareInfo[hardware]) >= Convert.ToInt32(configReadWriter.readConfig(hardware)) && hardware != "RamUtil") 
+        {
+            noti.ShowNotification($"High reading for {hardware}: {hardwareInfo[hardware]}");
+        }
+        else if (hardware == "RamUtil") 
+        {
+            if((getRAM()/getSysRAM())*100 < Convert.ToInt32(configReadWriter.readConfig(hardware)))
+            {
+                noti.ShowNotification($"Low RAM Avaliable: {(getRAM() / getSysRAM())*100}%");
+            }
+        }
     }
 
     }
