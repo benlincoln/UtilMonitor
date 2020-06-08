@@ -13,7 +13,7 @@ public class Getter
     protected Computer myComputer;
     private int maxVal;
     private double relativePercent;
-    private bool CPUNotified, GPUNotified, RAMNotified;
+    private bool notified;
     private Dictionary<string,string> hardwareInfo = new Dictionary<string, string>();
     //private List<string> storageNames = new List<string>();
     //Default constructor
@@ -33,7 +33,8 @@ public class Getter
         myComputer = new Computer
         {
             GPUEnabled = true,
-            CPUEnabled = true
+            CPUEnabled = true,
+            HDDEnabled = true
         };
         myComputer.Open();
         foreach (var hardwareItem in myComputer.Hardware)
@@ -49,7 +50,7 @@ public class Getter
                 hardwareInfo["CPUName"] = hardwareItem.Name;
                 
             }
-            //Quits the application thus
+            //Quits the loop once both are assigned improving the effeciency
             if (hardwareInfo["GPUName"] != null && hardwareInfo["CPUName"] != null)
             {
                 break;
@@ -66,7 +67,7 @@ public class Getter
         }
         //storageNames = buildDriveList(myComputer);
     }
-    //Seemingly does not detect drives, however can adapt this code to accomodate for multi cpu/gpu configs.
+    //Might have found solution for detecting drives, will implement at a later date.
     /*private List<string> buildDriveList(Computer computer)
     {
         List<string> drives = new List<string>();
@@ -92,13 +93,15 @@ public class Getter
         myComputer.GPUEnabled = true;
         myComputer.CPUEnabled = true;
         myComputer.Open();
+        // Booleans to mark when the program has fetched all the info for the respective components to optimise an otherwise inefficent algorithm
+        Boolean GPUDone = false;
+        Boolean CPUDone = false;
         foreach (var hardwareItem in myComputer.Hardware)
         {
             //Checks for GPU of either manufacturer, interestingly still lists AMD cards as ATI.
             // Works on AMD hardware, does not recognise intel iGPUs, some laptops and potentially some OEM MoBos do not seem to allow temp monitoring
             if (hardwareItem.HardwareType == HardwareType.GpuNvidia || hardwareItem.HardwareType == HardwareType.GpuAti)
             {
-                //todo: Add a boolean that marks each one as done so can exit the foreach as soon as possible
                 
                 foreach (var sensor in hardwareItem.Sensors)
                 {
@@ -111,9 +114,11 @@ public class Getter
                         //This is called load as opposed to util, as load and utilisation appear to be two different things (MSI Afterburner returns a different value when viewing GPU utilisation)
                         hardwareInfo["GPULoad"] = Convert.ToString(Convert.ToInt32(sensor.Value));
                     }
+
                 }
+                GPUDone = true;
             }
-            //Like above, could condense into a function.
+            
             else if (hardwareItem.HardwareType == HardwareType.CPU)
             {
                 foreach (var sensor in hardwareItem.Sensors)
@@ -121,16 +126,35 @@ public class Getter
                     if (sensor.SensorType == SensorType.Temperature)
                     {
                         hardwareInfo["CPUTemp"] = Convert.ToString(sensor.Value);
+                        CPUDone = true;
+                        break;
                     }
                 }
             }
-            
+         if (GPUDone && CPUDone)
+            {
+                //Breaks out of the foreach to try limi
+                break;
+            }   
             
 
         }
         // Essentially destroies the myComputer object.
         myComputer = null;
-
+        // Checks if needs to send a notification for high usage
+        
+        // Uses a boolean to stop a new notification every update for continous max load
+        string notificationBody = checkNotification(hardwareInfo);
+        if (notificationBody != null && notified == false)
+        {
+            noti.ShowNotification(notificationBody);
+            notified = true;
+        }
+        else
+        {
+            notified = false;
+        }
+        
     }
 
     //Gets total system memory, returns in bytes
@@ -154,16 +178,7 @@ public class Getter
     }
     public int getRAM()
     {
-        /* Commented code causes stack overflow error, unsure as to why
-         if ((getRAM() / getSysRAM()) * 100 < 5 )
-        {
-            noti.ShowNotification($"High RAM Utilisation");
-            RAMNotified = true;
-        }
-        else
-        {
-            RAMNotified = false;
-        }*/
+        
         return Convert.ToInt32(hardwareInfo["FreeRAM"]);
     }
     public int getGPULoad()
@@ -221,23 +236,48 @@ public class Getter
         }
         
     }
-    private void checkNotification(string hardware) {
-        if (Convert.ToInt32(configReadWriter.readConfig(hardware)) == 0)
-            {
-            // If the setting is null/0 the code will be exited without checking for a notification
-            return;
-            }
-        if (Convert.ToInt32(hardwareInfo[hardware]) >= Convert.ToInt32(configReadWriter.readConfig(hardware)) && hardware != "RamUtil") 
+    private string checkNotification(Dictionary<string, string> hardwareDict) {
+        List<string> highValues = new List<string>();
+        foreach (KeyValuePair<string, string> hardwareItem in hardwareDict)
         {
-            noti.ShowNotification($"High reading for {hardware}: {hardwareInfo[hardware]}");
-        }
-        else if (hardware == "RamUtil") 
-        {
-            if((getRAM()/getSysRAM())*100 < Convert.ToInt32(configReadWriter.readConfig(hardware)))
+            string hardware = hardwareItem.Key;
+            if (hardware == "CPUName" || hardware == "GPUName")
             {
-                noti.ShowNotification($"Low RAM Avaliable: {(getRAM() / getSysRAM())*100}%");
+                continue;
+            }
+            if (Convert.ToInt32(configReadWriter.readConfig(hardware)) == 0)
+            {
+                // If the setting is null/0 the code skip that hardware item
+                continue;
+            }
+            if (Convert.ToInt32(hardwareInfo[hardware]) >= Convert.ToInt32(configReadWriter.readConfig(hardware)) && hardware != "RamUtil")
+            {
+                highValues.Add(hardware);
+                noti.ShowNotification($"High reading for {hardware}: {hardwareInfo[hardware]}");
+                
+            }
+            else if (hardware == "RamUtil")
+            {
+                if ((getRAM() / getSysRAM()) * 100 < Convert.ToInt32(configReadWriter.readConfig(hardware)))
+                {
+                    highValues.Add("RamUtil");
+                    // Need to add RAM Util to the dictionary as part of the update calculations for sake of code cleanliness i.e. not requiring seperate elifs 
+                    noti.ShowNotification($"Low RAM Avaliable: {(getRAM() / getSysRAM()) * 100}%");
+                    
+                }
             }
         }
+        if (highValues.Count > 0)
+        {
+            string notificationBody = "High values detected for: ";
+            foreach (string hardwareAlert in highValues)
+            {
+                notificationBody += $"{hardwareAlert}: {hardwareDict[hardwareAlert]} ";
+                
+                return notificationBody;
+            } 
+        }
+        return null;
     }
 
     }
