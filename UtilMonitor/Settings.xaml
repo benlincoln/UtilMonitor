@@ -33,6 +33,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="257,148,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" FontFamily="Roboto Thin" Height="30" Width="131"><Run Text="G"/><Run Text="PU "/><Run Text="Load"/><Run Text=" "/><Run/><LineBreak/><Run Text="Notification"/><Run Text=" Value"/></TextBlock>
         <TextBox x:Name ="CPUUtil_Noti" MaxLength="3" HorizontalAlignment="Left" PreviewTextInput="percentPreviewTextInput"  Height="23" Margin="374,95,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" />
         <TextBox x:Name ="GPULoad_Noti" MaxLength="3" HorizontalAlignment="Left" PreviewTextInput="percentPreviewTextInput"  Height="23" Margin="374,148,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBlock HorizontalAlignment="Left" Margin="257,267,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Roboto Thin" Foreground="White" Width="237"><Run Text="Note: To "/><Run Text="d"/><Run Text="isable a"/><Run Text=" "/><Run Text="notification"/><Run Text=","/><LineBreak/><Run Text="set the value to"/><Run Text=" "/><Run Text="zero"/></TextBlock>
 
     </Grid>
 </Window>

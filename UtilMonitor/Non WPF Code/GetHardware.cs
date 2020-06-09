@@ -133,7 +133,7 @@ public class Getter
             }
          if (GPUDone && CPUDone)
             {
-                //Breaks out of the foreach to try limi
+                //Breaks out of the foreach to try limit ineffeciency 
                 break;
             }   
             
@@ -245,9 +245,10 @@ public class Getter
             {
                 continue;
             }
-            if (Convert.ToInt32(configReadWriter.readConfig(hardware)) == 0)
+            
+            if (Convert.ToInt32(configReadWriter.readConfig(hardware)) == 0 || configReadWriter.readConfig(hardware) == null)
             {
-                // If the setting is null/0 the code skip that hardware item
+                // If the setting is 0 the code skip that hardware item
                 continue;
             }
             if (Convert.ToInt32(hardwareInfo[hardware]) >= Convert.ToInt32(configReadWriter.readConfig(hardware)) && hardware != "RamUtil")
