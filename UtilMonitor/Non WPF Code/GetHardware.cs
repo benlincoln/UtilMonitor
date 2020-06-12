@@ -30,6 +30,9 @@ public class Getter
         hardwareInfo.Add("GPUTemp", null);
         hardwareInfo.Add("CPUUtil", null);
         hardwareInfo.Add("GPULoad", null);
+        hardwareInfo.Add("RAMUtil", null);
+        hardwareInfo.Add("SysRAM", null);
+        hardwareInfo["SysRAM"] = Convert.ToString(Convert.ToDouble(getSystemMemory()) / Math.Pow(1024, 2));
         myComputer = new Computer
         {
             GPUEnabled = true,
@@ -142,7 +145,7 @@ public class Getter
         // Essentially destroies the myComputer object.
         myComputer = null;
         // Checks if needs to send a notification for high usage
-        
+        hardwareInfo["RAMUtil"] = Convert.ToString((getRAM() / getSysRAM()) * 100);
         // Uses a boolean to stop a new notification every update for continous max load
         string notificationBody = checkNotification(hardwareInfo);
         if (notificationBody != null && notified == false)
@@ -188,7 +191,7 @@ public class Getter
     public int getSysRAM()
     {
         //Converts the avaliable ram into a double in megabytes
-        return Convert.ToInt32(Convert.ToDouble(getSystemMemory())/Math.Pow(1024,2));
+        return Convert.ToInt32(hardwareInfo["RAMUtil"]);
     }
 
     public string getCPUName()
@@ -226,7 +229,7 @@ public class Getter
                 relativePercent *= 100;
                 return yMax - (relativePercent);
             case "ramUtil":
-                return yMax - (getRAM() / getSysRAM())*100;
+                return yMax - Convert.ToInt32(hardwareInfo["RAMUtil"]);
             case "gpuLoad":
                 return yMax - getGPULoad();
             default:
@@ -241,10 +244,10 @@ public class Getter
         foreach (KeyValuePair<string, string> hardwareItem in hardwareDict)
         {
             string hardware = hardwareItem.Key;
-            if (hardware == "CPUName" || hardware == "GPUName")
+            /*if (hardware == "CPUName" || hardware == "GPUName")
             {
                 continue;
-            }
+            }*/
             
             if (Convert.ToInt32(configReadWriter.readConfig(hardware)) == 0 || configReadWriter.readConfig(hardware) == null)
             {
@@ -253,20 +256,12 @@ public class Getter
             }
             if (Convert.ToInt32(hardwareInfo[hardware]) >= Convert.ToInt32(configReadWriter.readConfig(hardware)) && hardware != "RamUtil")
             {
+                // Builds a string for components with high readings, as opposed to two seperate notifications
                 highValues.Add(hardware);
                 noti.ShowNotification($"High reading for {hardware}: {hardwareInfo[hardware]}");
                 
             }
-            else if (hardware == "RamUtil")
-            {
-                if ((getRAM() / getSysRAM()) * 100 < Convert.ToInt32(configReadWriter.readConfig(hardware)))
-                {
-                    highValues.Add("RamUtil");
-                    // Need to add RAM Util to the dictionary as part of the update calculations for sake of code cleanliness i.e. not requiring seperate elifs 
-                    noti.ShowNotification($"Low RAM Avaliable: {(getRAM() / getSysRAM()) * 100}%");
-                    
-                }
-            }
+            
         }
         if (highValues.Count > 0)
         {
