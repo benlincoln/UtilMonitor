@@ -23,6 +23,7 @@ public class Getter
         ramCounter = new PerformanceCounter("Memory", "Available MBytes");
         //gpuCounter = new PerformanceCounter("GPU Engine", "Utilization Percentage", "");
         ulong totalMemory = getSystemMemory();
+        // Feel like there should be a cleaner way to do this however currently unsure
         hardwareInfo.Add("CPUName", null);
         hardwareInfo.Add("GPUName", null);
         hardwareInfo.Add("FreeRAM", null);
@@ -31,8 +32,7 @@ public class Getter
         hardwareInfo.Add("CPUUtil", null);
         hardwareInfo.Add("GPULoad", null);
         hardwareInfo.Add("RAMUtil", null);
-        hardwareInfo.Add("SysRAM", null);
-        hardwareInfo["SysRAM"] = Convert.ToString(Convert.ToDouble(getSystemMemory()) / Math.Pow(1024, 2));
+        hardwareInfo.Add("SysRAM", Convert.ToString(Convert.ToDouble(getSystemMemory()) / Math.Pow(1024, 2)));
         myComputer = new Computer
         {
             GPUEnabled = true,
@@ -146,7 +146,7 @@ public class Getter
         myComputer = null;
         // Checks if needs to send a notification for high usage
         hardwareInfo["RAMUtil"] = Convert.ToString((getRAM() / getSysRAM()) * 100);
-        // Uses a boolean to stop a new notification every update for continous max load
+        // Uses a boolean to stop a new notification every update for continous max load, could potentially use a time frame between notifications to stop notification spam
         string notificationBody = checkNotification(hardwareInfo);
         if (notificationBody != null && notified == false)
         {
@@ -166,7 +166,6 @@ public class Getter
         return new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory;
     }
 
-    //Getters, could potentially use the settings read/writer for notifications for high temps/ when to warn the user if their ram util goes to certain values (i.e. a user may want to know when their util goes above 70%, not just near maxxed out)
     public int getCPUUtil()
         {
             return Convert.ToInt32(hardwareInfo["CPUUtil"]);
@@ -188,10 +187,10 @@ public class Getter
     {
         return Convert.ToInt32(hardwareInfo["GPULoad"]);
     }
-    public int getSysRAM()
+    public double getSysRAM()
     {
         //Converts the avaliable ram into a double in megabytes
-        return Convert.ToInt32(hardwareInfo["RAMUtil"]);
+        return Convert.ToDouble(hardwareInfo["RAMUtil"]);
     }
 
     public string getCPUName()
@@ -258,7 +257,7 @@ public class Getter
             {
                 // Builds a string for components with high readings, as opposed to two seperate notifications
                 highValues.Add(hardware);
-                noti.ShowNotification($"High reading for {hardware}: {hardwareInfo[hardware]}");
+                
                 
             }
             
