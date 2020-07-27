@@ -15,23 +15,19 @@ public class Getter
     private double relativePercent;
     private bool notified;
     private Dictionary<string,string> hardwareInfo = new Dictionary<string, string>();
-    //private List<string> storageNames = new List<string>();
     //Default constructor
     public Getter()
     {
         cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
         ramCounter = new PerformanceCounter("Memory", "Available MBytes");
-        //gpuCounter = new PerformanceCounter("GPU Engine", "Utilization Percentage", "");
         ulong totalMemory = getSystemMemory();
-        // Feel like there should be a cleaner way to do this however currently unsure
-        hardwareInfo.Add("CPUName", null);
-        hardwareInfo.Add("GPUName", null);
-        hardwareInfo.Add("FreeRAM", null);
-        hardwareInfo.Add("CPUTemp", null);
-        hardwareInfo.Add("GPUTemp", null);
-        hardwareInfo.Add("CPUUtil", null);
-        hardwareInfo.Add("GPULoad", null);
-        hardwareInfo.Add("RAMUtil", null);
+        // Uses a foreach loop to create the empty values in the dictionary
+        string[] dictStrings = {"CPUName", "GPUName", "FreeRAM", "CPUTemp" , "GPUTemp", "CPUUtil", "GPULoad", "RAMUtil"};
+        foreach (string dictKey in dictStrings)
+        {
+            hardwareInfo.Add(dictKey, null);
+        }
+        
         hardwareInfo.Add("SysRAM", Convert.ToString(Convert.ToDouble(getSystemMemory()) / Math.Pow(1024, 2)));
         myComputer = new Computer
         {
