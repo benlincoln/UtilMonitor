@@ -186,7 +186,7 @@ public class Getter
     public double getSysRAM()
     {
         //Converts the avaliable ram into a double in megabytes
-        return Convert.ToDouble(hardwareInfo["RAMUtil"]);
+        return Convert.ToDouble(hardwareInfo["SysRAM"]);
     }
 
     public string getCPUName()
@@ -224,7 +224,7 @@ public class Getter
                 relativePercent *= 100;
                 return yMax - (relativePercent);
             case "ramUtil":
-                return yMax - Convert.ToInt32(hardwareInfo["RAMUtil"]);
+                return yMax - Convert.ToDouble(hardwareInfo["RAMUtil"]);
             case "gpuLoad":
                 return yMax - getGPULoad();
             default:
